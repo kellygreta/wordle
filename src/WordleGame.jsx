@@ -1,0 +1,222 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { WORD_LIST } from "./wordlist";
+import Header from "./components/Header";
+import Board from "./components/Board";
+import Keyboard from "./components/Keyboard";
+import NewGameButton from "./components/NewGameButton";
+import Instructions from "./components/Instructions";
+import { useTheme } from "./context/ThemeContext"; // <-- use the global theme
+
+const ROWS = 6;
+const COLS = 5;
+
+const WordleGame = () => {
+  const { theme } = useTheme(); // get the current theme
+  const [targetWord, setTargetWord] = useState("");
+  const [currentRow, setCurrentRow] = useState(0);
+  const [currentCol, setCurrentCol] = useState(0);
+  const [board, setBoard] = useState(
+    Array(ROWS)
+      .fill()
+      .map(() => Array(COLS).fill(""))
+  );
+  const [gameState, setGameState] = useState("playing"); // 'playing', 'won', 'lost'
+  const [letterStates, setLetterStates] = useState({});
+
+  // Initialize game
+  useEffect(() => {
+    resetGame();
+  }, []);
+
+  const resetGame = () => {
+    const randomWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+    setTargetWord(randomWord);
+    setCurrentRow(0);
+    setCurrentCol(0);
+    setBoard(
+      Array(ROWS)
+        .fill()
+        .map(() => Array(COLS).fill(""))
+    );
+    setGameState("playing");
+    setLetterStates({});
+  };
+
+  const getCellState = (row, col) => {
+    if (row > currentRow) return "empty";
+    if (row === currentRow) return "current";
+
+    const letter = board[row][col];
+    const targetLetter = targetWord[col];
+
+    if (letter === targetLetter) return "correct";
+    if (targetWord.includes(letter)) return "present";
+    return "absent";
+  };
+
+  const updateLetterStates = (row) => {
+    const newLetterStates = { ...letterStates };
+    for (let col = 0; col < COLS; col++) {
+      const letter = board[row][col];
+      const state = getCellState(row, col);
+      if (
+        !newLetterStates[letter] ||
+        (newLetterStates[letter] === "absent" && state === "present") ||
+        (newLetterStates[letter] === "present" && state === "correct") ||
+        state === "correct"
+      ) {
+        newLetterStates[letter] = state;
+      }
+    }
+    setLetterStates(newLetterStates);
+  };
+
+  const submitWord = useCallback(() => {
+    if (currentCol !== COLS) {
+      alert("Not enough letters!");
+      return;
+    }
+
+    const currentWord = board[currentRow].join("");
+
+    if (!WORD_LIST.includes(currentWord)) {
+      alert("Not in word list!");
+      return;
+    }
+
+    updateLetterStates(currentRow);
+
+    if (currentWord === targetWord) {
+      setGameState("won");
+      alert("Congratulations! 🎉");
+    } else if (currentRow === ROWS - 1) {
+      setGameState("lost");
+      alert(`Game Over! The word was ${targetWord}`);
+    } else {
+      setCurrentRow(currentRow + 1);
+      setCurrentCol(0);
+    }
+  }, [currentRow, currentCol, board, targetWord]);
+
+  const handleKeyPress = useCallback(
+    (key) => {
+      if (gameState !== "playing") return;
+
+      if (key === "ENTER") {
+        submitWord();
+      } else if (key === "BACKSPACE") {
+        if (currentCol > 0) {
+          const newBoard = [...board];
+          newBoard[currentRow][currentCol - 1] = "";
+          setBoard(newBoard);
+          setCurrentCol(currentCol - 1);
+        }
+      } else if (key.match(/^[A-Z]$/) && currentCol < COLS) {
+        const newBoard = [...board];
+        newBoard[currentRow][currentCol] = key;
+        setBoard(newBoard);
+        setCurrentCol(currentCol + 1);
+      }
+    },
+    [gameState, currentRow, currentCol, board, submitWord]
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const key = event.key.toUpperCase();
+      if (key === "ENTER" || key === "BACKSPACE" || key.match(/^[A-Z]$/)) {
+        event.preventDefault();
+        handleKeyPress(key);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyPress]);
+
+  const getCellClass = (row, col) => {
+    const state = getCellState(row, col);
+    const hasLetter = board[row][col] !== "";
+
+    let baseClass =
+      "w-14 h-14 border-2 flex items-center justify-center text-2xl font-bold transition-all duration-300 ";
+
+    if (theme === "dark") {
+      baseClass +=
+        state === "correct"
+          ? "border-green-500 bg-green-500 text-white"
+          : state === "present"
+          ? "border-yellow-500 bg-yellow-500 text-white"
+          : state === "absent"
+          ? "border-gray-500 bg-gray-500 text-white"
+          : hasLetter
+          ? "border-gray-400 bg-gray-800 text-white"
+          : "border-gray-600 bg-gray-800 text-white";
+    } else {
+      baseClass +=
+        state === "correct"
+          ? "border-green-500 bg-green-500 text-white"
+          : state === "present"
+          ? "border-yellow-500 bg-yellow-500 text-white"
+          : state === "absent"
+          ? "border-gray-500 bg-gray-500 text-white"
+          : hasLetter
+          ? "border-gray-500 bg-white text-black"
+          : "border-gray-300 bg-white text-black";
+    }
+
+    return baseClass;
+  };
+
+  const getKeyClass = (key) => {
+    const state = letterStates[key];
+    let baseClass =
+      "px-3 py-4 m-1 rounded font-bold cursor-pointer transition-all duration-300 select-none ";
+    if (key === "ENTER" || key === "BACKSPACE") baseClass += "px-6 text-sm ";
+    if (gameState !== "playing") baseClass += "opacity-75 cursor-not-allowed ";
+    if (state === "correct")
+      baseClass += "bg-green-500 text-white hover:bg-green-600";
+    else if (state === "present")
+      baseClass += "bg-yellow-500 text-white hover:bg-yellow-600";
+    else if (state === "absent")
+      baseClass += "bg-gray-500 text-white hover:bg-gray-600";
+    else
+      baseClass +=
+        theme === "dark"
+          ? "bg-gray-700 text-white hover:bg-gray-600"
+          : "bg-gray-200 text-black hover:bg-gray-300";
+    return baseClass;
+  };
+
+  const keyboardRows = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+    ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"],
+  ];
+
+  return (
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        theme === "dark" ? "bg-gray-900" : "bg-gray-50"
+      } flex flex-col items-center justify-center p-4`}
+    >
+      <div className="max-w-md w-full">
+        <Header />
+
+        <Board board={board} getCellClass={getCellClass} />
+
+        <Keyboard
+          rows={keyboardRows}
+          handleKeyPress={handleKeyPress}
+          getKeyClass={getKeyClass}
+          gameState={gameState}
+        />
+
+        <NewGameButton resetGame={resetGame} />
+
+        <Instructions theme={theme} wordCount={WORD_LIST.length} />
+      </div>
+    </div>
+  );
+};
+
+export default WordleGame;
