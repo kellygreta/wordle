@@ -6,6 +6,7 @@ import Keyboard from "./components/Keyboard";
 import NewGameButton from "./components/NewGameButton";
 import Instructions from "./components/Instructions";
 import { useTheme } from "./context/ThemeContext"; // <-- use the global theme
+import GameResultModal from "./components/GameResultModal";
 
 const ROWS = 6;
 const COLS = 5;
@@ -71,6 +72,9 @@ const WordleGame = () => {
     setLetterStates(newLetterStates);
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [result, setResult] = useState(null);
+
   const submitWord = useCallback(() => {
     if (currentCol !== COLS) {
       alert("Not enough letters!");
@@ -88,10 +92,12 @@ const WordleGame = () => {
 
     if (currentWord === targetWord) {
       setGameState("won");
-      alert("Congratulations! 🎉");
+      setResult({ status: "won", attempts: currentRow + 1 });
+      setShowModal(true);
     } else if (currentRow === ROWS - 1) {
       setGameState("lost");
-      alert(`Game Over! The word was ${targetWord}`);
+      setResult({ status: "lost", word: targetWord });
+      setShowModal(true);
     } else {
       setCurrentRow(currentRow + 1);
       setCurrentCol(0);
@@ -203,6 +209,15 @@ const WordleGame = () => {
 
         <Instructions theme={theme} wordCount={WORD_LIST.length} />
       </div>
+      <GameResultModal
+        isVisible={showModal}
+        result={result}
+        onClose={() => setShowModal(false)}
+        onRetry={() => {
+          resetGame();
+          setShowModal(false);
+        }}
+      />
     </div>
   );
 };
