@@ -7,31 +7,90 @@
   --color-primary-light: 196 181 253; /* violet-300 */
   --color-secondary: 107 114 128; /* gray-500 */
   --color-secondary-hover: 75 85 99; /* gray-600 */
-  
+
+  /* Game-specific colors */
+  --color-correct: 34 197 94;       /* green-500 */
+  --color-correct-hover: 22 163 74; /* green-600 */
+  --color-present: 234 179 8;       /* yellow-500 */
+  --color-present-hover: 202 138 4; /* yellow-600 */
+  --color-absent: 107 114 128;      /* gray-500 */
+  --color-absent-hover: 75 85 99;   /* gray-600 */
+
   /* Light mode background and text */
   --bg-primary: 255 255 255; /* white */
   --bg-secondary: 249 250 251; /* gray-50 */
-  --bg-gradient-from: 96 165 250; /* blue-400 */
-  --bg-gradient-via: 236 72 153; /* pink-500 */
-  --bg-gradient-to: 139 92 246; /* violet-500 */
+  --bg-gray-light: 229 231 235; /* gray-200 */
+  --bg-gray-lighter: 209 213 219; /* gray-300 */
+
   --text-primary: 17 24 39; /* gray-900 */
   --text-secondary: 75 85 99; /* gray-600 */
+  --text-white: 255 255 255;
+  --text-black: 0 0 0;
 }
 
 .dark {
-  /* Dark mode colors - matching violet/purple theme */
+  /* Dark mode colors */
   --color-primary: 167 139 250; /* violet-400 */
   --color-primary-hover: 139 92 246; /* violet-500 */
   --color-primary-light: 196 181 253; /* violet-300 */
   --color-secondary: 156 163 175; /* gray-400 */
   --color-secondary-hover: 209 213 219; /* gray-300 */
-  
+
+  /* Game-specific colors (same palette, works in dark too) */
+  --color-correct: 34 197 94;       /* green-500 */
+  --color-correct-hover: 22 163 74; /* green-600 */
+  --color-present: 234 179 8;       /* yellow-500 */
+  --color-present-hover: 202 138 4; /* yellow-600 */
+  --color-absent: 107 114 128;      /* gray-500 */
+  --color-absent-hover: 75 85 99;   /* gray-600 */
+
   /* Dark mode background and text */
   --bg-primary: 24 24 27; /* zinc-900 */
   --bg-secondary: 39 39 42; /* zinc-800 */
-  --bg-gradient-from: 67 56 202; /* indigo-700 */
-  --bg-gradient-via: 124 58 237; /* violet-600 */
-  --bg-gradient-to: 88 28 135; /* purple-900 */
+  --bg-gray-dark: 55 65 81; /* gray-700 */
+  --bg-gray-darker: 31 41 55; /* gray-800 */
+  --bg-gray-darkest: 17 24 39; /* gray-900 */
+
   --text-primary: 243 244 246; /* gray-100 */
   --text-secondary: 156 163 175; /* gray-400 */
+  --text-white: 255 255 255;
+  --text-black: 0 0 0;
+}
+
+/* === Game State Colors === */
+.bg-correct {
+  background-color: rgb(var(--color-correct));
+  border-color: rgb(var(--color-correct));
+}
+.bg-correct:hover {
+  background-color: rgb(var(--color-correct-hover));
+}
+
+.bg-present {
+  background-color: rgb(var(--color-present));
+  border-color: rgb(var(--color-present));
+}
+.bg-present:hover {
+  background-color: rgb(var(--color-present-hover));
+}
+
+.bg-absent {
+  background-color: rgb(var(--color-absent));
+  border-color: rgb(var(--color-absent));
+}
+.bg-absent:hover {
+  background-color: rgb(var(--color-absent-hover));
+}
+
+/* Neutral states */
+.bg-light {
+  background-color: rgb(var(--bg-primary));
+  border-color: rgb(var(--color-secondary));
+  color: rgb(var(--text-black));
+}
+
+.bg-dark {
+  background-color: rgb(var(--bg-gray-darker));
+  border-color: rgb(var(--color-secondary));
+  color: rgb(var(--text-white));
 }

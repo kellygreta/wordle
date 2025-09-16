@@ -140,28 +140,16 @@ const WordleGame = () => {
     let baseClass =
       "w-14 h-14 border-2 flex items-center justify-center text-2xl font-bold transition-all duration-300 ";
 
-    if (theme === "dark") {
-      baseClass +=
-        state === "correct"
-          ? "border-green-500 bg-green-500 text-white"
-          : state === "present"
-          ? "border-yellow-500 bg-yellow-500 text-white"
-          : state === "absent"
-          ? "border-gray-500 bg-gray-500 text-white"
-          : hasLetter
-          ? "border-gray-400 bg-gray-800 text-white"
-          : "border-gray-600 bg-gray-800 text-white";
+    if (state === "correct") {
+      baseClass += " bg-correct text-white";
+    } else if (state === "present") {
+      baseClass += " bg-present text-white";
+    } else if (state === "absent") {
+      baseClass += " bg-absent text-white";
+    } else if (hasLetter) {
+      baseClass += theme === "dark" ? " bg-dark" : " bg-light";
     } else {
-      baseClass +=
-        state === "correct"
-          ? "border-green-500 bg-green-500 text-white"
-          : state === "present"
-          ? "border-yellow-500 bg-yellow-500 text-white"
-          : state === "absent"
-          ? "border-gray-500 bg-gray-500 text-white"
-          : hasLetter
-          ? "border-gray-500 bg-white text-black"
-          : "border-gray-300 bg-white text-black";
+      baseClass += theme === "dark" ? " bg-dark" : " bg-light";
     }
 
     return baseClass;
@@ -173,17 +161,17 @@ const WordleGame = () => {
       "px-3 py-4 m-1 rounded font-bold cursor-pointer transition-all duration-300 select-none ";
     if (key === "ENTER" || key === "BACKSPACE") baseClass += "px-6 text-sm ";
     if (gameState !== "playing") baseClass += "opacity-75 cursor-not-allowed ";
-    if (state === "correct")
-      baseClass += "bg-green-500 text-white hover:bg-green-600";
-    else if (state === "present")
-      baseClass += "bg-yellow-500 text-white hover:bg-yellow-600";
-    else if (state === "absent")
-      baseClass += "bg-gray-500 text-white hover:bg-gray-600";
-    else
-      baseClass +=
-        theme === "dark"
-          ? "bg-gray-700 text-white hover:bg-gray-600"
-          : "bg-gray-200 text-black hover:bg-gray-300";
+
+    if (state === "correct") {
+      baseClass += " bg-correct text-white";
+    } else if (state === "present") {
+      baseClass += " bg-present text-white";
+    } else if (state === "absent") {
+      baseClass += " bg-absent text-white";
+    } else {
+      baseClass += theme === "dark" ? " bg-dark" : " bg-light";
+    }
+
     return baseClass;
   };
 
