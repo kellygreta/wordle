@@ -9,12 +9,12 @@ Guess the 5-letter word in 6 tries! Feedback is given via colors:
 
 ## ✨ Features
 
-- 🎮 Classic Wordle gameplay (6 rows × 5 columns)
-- 🌙 Dark mode toggle
-- ⌨️ Virtual keyboard + physical keyboard input
-- 🔄 Reset button for new game rounds
-- 📝 Large word list included (~1,000 words)
-- ⚛️ Modular component-based architecture
+- Classic Wordle gameplay (6 rows × 5 columns)
+- Dark mode toggle
+- Virtual keyboard + physical keyboard input
+- Reset button for new game rounds
+- Large word list included (~1,000 words)
+- Modular component-based architecture
 
 ## Technologies
 
