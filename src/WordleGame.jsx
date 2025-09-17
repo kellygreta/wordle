@@ -57,18 +57,29 @@ const WordleGame = () => {
 
   const updateLetterStates = (row) => {
     const newLetterStates = { ...letterStates };
+    const guess = board[row];
+
     for (let col = 0; col < COLS; col++) {
-      const letter = board[row][col];
-      const state = getCellState(row, col);
+      const letter = guess[col];
+      if (!letter) continue;
+
+      let state = "absent";
+      if (targetWord[col] === letter) {
+        state = "correct";
+      } else if (targetWord.includes(letter)) {
+        state = "present";
+      }
+
+      // upgrade logic: absent < present < correct
       if (
         !newLetterStates[letter] ||
-        (newLetterStates[letter] === "absent" && state === "present") ||
-        (newLetterStates[letter] === "present" && state === "correct") ||
-        state === "correct"
+        (newLetterStates[letter] === "absent" && state !== "absent") ||
+        (newLetterStates[letter] === "present" && state === "correct")
       ) {
         newLetterStates[letter] = state;
       }
     }
+
     setLetterStates(newLetterStates);
   };
 

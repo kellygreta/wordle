@@ -1,5 +1,3 @@
-import React from "react";
-
 const Keyboard = ({ rows, handleKeyPress, getKeyClass, gameState }) => {
   return (
     <div className="mb-6">
