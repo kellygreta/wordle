@@ -94,3 +94,99 @@
   border-color: rgb(var(--color-secondary));
   color: rgb(var(--text-white));
 }
+
+/* === Modal-specific styles === */
+.text-correct { color: rgb(var(--color-correct)); }
+.text-present { color: rgb(var(--color-present)); }
+.text-absent { color: rgb(var(--color-absent)); }
+.text-primary { color: rgb(var(--text-primary)); }
+.text-secondary { color: rgb(var(--text-secondary)); }
+.text-white { color: rgb(var(--text-white)); }
+.bg-primary { background-color: rgb(var(--bg-primary)); }
+.bg-secondary { background-color: rgb(var(--bg-secondary)); }
+.bg-gray-light { background-color: rgb(var(--bg-gray-light)); }
+.border-primary { border-color: rgb(var(--color-primary)); }
+.border-secondary { border-color: rgb(var(--color-secondary)); }
+
+.gradient-win {
+  background: linear-gradient(135deg, 
+    rgb(var(--color-correct)) 0%, 
+    rgb(var(--color-correct-hover)) 100%);
+}
+
+.gradient-lose {
+  background: linear-gradient(135deg, 
+    rgb(var(--color-secondary)) 0%, 
+    rgb(var(--color-secondary-hover)) 100%);
+}
+
+.btn-primary {
+  background-color: rgb(var(--color-primary));
+  color: rgb(var(--text-white));
+  border: 2px solid rgb(var(--color-primary));
+}
+
+.btn-primary:hover {
+  background-color: rgb(var(--color-primary-hover));
+  border-color: rgb(var(--color-primary-hover));
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: rgb(var(--text-primary));
+  border: 2px solid rgb(var(--color-secondary));
+}
+
+.btn-secondary:hover {
+  background-color: rgb(var(--bg-secondary));
+  border-color: rgb(var(--color-secondary-hover));
+}
+
+.btn-win {
+  background-color: rgb(var(--color-correct));
+  color: rgb(var(--text-white));
+  border: 2px solid rgb(var(--color-correct));
+}
+
+.btn-win:hover {
+  background-color: rgb(var(--color-correct-hover));
+  border-color: rgb(var(--color-correct-hover));
+}
+
+.stat-card-correct {
+  background-color: rgba(var(--color-correct), 0.1);
+  border: 1px solid rgba(var(--color-correct), 0.2);
+}
+
+.stat-card-primary {
+  background-color: rgba(var(--color-primary), 0.1);
+  border: 1px solid rgba(var(--color-primary), 0.2);
+}
+
+.stat-card-present {
+  background-color: rgba(var(--color-present), 0.1);
+  border: 1px solid rgba(var(--color-present), 0.2);
+}
+
+.word-reveal {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: rgb(220, 38, 38);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.close-btn {
+  background-color: rgb(var(--bg-secondary));
+  color: rgb(var(--text-secondary));
+}
+
+.close-btn:hover {
+  background-color: rgb(var(--bg-gray-light));
+}
+
+.modal-shadow-win {
+  box-shadow: 0 25px 50px -12px rgba(var(--color-correct), 0.4);
+}
+
+.modal-shadow-default {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
